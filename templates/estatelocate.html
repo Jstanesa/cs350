@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+ <h1>Search for an Estate</h1>
+
+<form method = "post" action = "/locateForm2">
+<table>
+					<tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>
+          
+          <input type="submit" value="Search Estates" />
+</table>
+</form>
+{% endblock %}
