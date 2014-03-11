@@ -3,6 +3,7 @@ import utils, MySQLdb
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def mainIndex():
     return render_template('index.html')
