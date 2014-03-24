@@ -5,8 +5,9 @@
 <form method = "post" action = "/locateForm2">
 <table>
 					<tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>
-          
-          <input type="submit" value="Search Estates" />
+          <tr><td>Address</td><td><input type="text" id="address" name="address"/></td></tr>
+          <tr><td>Cost of Damage:</td><td>min</td><td><input type="number" id="min" name="min"/></td><td>max</td><td><input type="number" id="max" name="max"/></td></tr>
+          <input type="submit" value="Search Estates"/>
 </table>
 </form>
 {% endblock %}

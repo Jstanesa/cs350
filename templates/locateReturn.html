@@ -2,9 +2,9 @@
 {% block content %}
 <h1>Possible Matches: </h1>
 <table>
-  <tr><th>DATE</th><th>NAME</th><th>LOCATION</th><th>PRICE</th></tr>
+  <tr><th>NAME</th><th>LOCATION</th><th>PRICE</th></tr>
    {% for house in houses %} 
-  <tr><td>{{house['dateListed']}}</td><td>{{house['address']}} </td><td>{{house['county']}} {{house['state']}}</td>
+  <tr><td>{{house['address']}} </td><td>{{house['county']}} {{house['state']}}</td>
     <td>{{house['price']}}</td>
     </tr> 
  {% endfor %}
