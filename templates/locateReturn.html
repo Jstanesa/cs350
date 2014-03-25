@@ -5,7 +5,7 @@
   <tr><th>NAME</th><th>LOCATION</th><th>PRICE</th><th>EST. REPAIRS</th></tr>
    {% for house in houses %} 
   <tr><td>{{house['address']}} </td><td>{{house['county']}} {{house['state']}}</td>
-    <td>{{house['price']}}</td><td>{{house['cost']}}</td>
+    <td>{{house['price']}}</td><td>{{house['SUM(hd.cost)']}}</td>
     </tr> 
  {% endfor %}
 </table>
