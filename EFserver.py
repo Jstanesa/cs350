@@ -58,19 +58,20 @@ def estatelocate2():
 		
         if 'state' in request.form:
   	    #if request.form['state']:
-            query =  "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON b.house_id = hd.house_id AND b.state = '" + request.form['state'] + "';"
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.state = '" + request.form['state'] + "' GROUP BY b.address;"
         if 'address' in request.form: 
         #if request.form['address']:
-            query = "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON b.house_id = hd.house_id AND b.address LIKE '%" + request.form['address'] + "%';" 
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.address LIKE '%" + request.form['address'] + "%';" 
         if 'max' in request.form:
         #if request.form['min']:
-            query = "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON hd.cost < '" + request.form['max'] + "';" 
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND hd.cost <= " + request.form['max'] + " GROUP BY b.address;" 
+            print(query)		
+			
 		
-			
-			
 			
     cur.execute(query)
     rows = cur.fetchall()
+    print(rows)
     return render_template('locateReturn.html', houses = rows)
 	
 
