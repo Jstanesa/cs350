@@ -14,9 +14,9 @@ def report3():
     db = utils.db_connect()
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
-    cur.execute('select * from basicHouse')
+    cur.execute('SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id GROUP BY b.address')
     rows = cur.fetchall()
-
+    print(rows)
     return render_template('houses.html', houses=rows)
   
 @app.route('/add', methods=['GET', 'POST'])
@@ -30,7 +30,14 @@ def estateadd2():
     cur = db.cursor()    
     #if user typed in the form and submitted
     if request.method == 'POST':
-      query = "INSERT INTO basicHouse VALUES ('" + request.form['address'] +"', '"+request.form['date']+"', '"+request.form['county']+"', '"+request.form['state']+"', "+request.form['price']+")"
+      damageType=request.form['damageType']
+      address=request.form['address']
+      query = "INSERT INTO basicHouse (address,county,state,price) VALUES ('" + address +"', '"+request.form['county']+"', '"+request.form['state']+"', "+request.form['price']+")"
+      print(query)
+      cur.execute(query)
+      db.commit()
+      query = "INSERT INTO house_damages (damage_id,house_id,cost) VALUES ((SELECT damage_id from damages where type='"
+      query+=damageType+"'), (SELECT house_id FROM basicHouse WHERE address= '"+ address+"') , '"+ request.form['damageCost'] + "');" 
       print(query)
       cur.execute(query)
       #rows = cur.fetchall()
@@ -48,11 +55,24 @@ def estatelocate2():
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)    
     #if user typed in the form and submitted
     if request.method == 'POST':
-      query = "SELECT * from basicHouse WHERE state = '" + request.form['state'] + "';"
-      cur.execute(query)
-      rows = cur.fetchall()
-    
+		
+        if 'state' in request.form:
+  	    #if request.form['state']:
+            query =  "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON b.house_id = hd.house_id AND b.state = '" + request.form['state'] + "';"
+        if 'address' in request.form: 
+        #if request.form['address']:
+            query = "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON b.house_id = hd.house_id AND b.address LIKE '%" + request.form['address'] + "%';" 
+        if 'max' in request.form:
+        #if request.form['min']:
+            query = "SELECT b.address, b.county, b.state, b.price, hd.cost FROM basicHouse b JOIN house_damages hd, damages ON hd.cost < '" + request.form['max'] + "';" 
+		
+			
+			
+			
+    cur.execute(query)
+    rows = cur.fetchall()
     return render_template('locateReturn.html', houses = rows)
+	
 
 @app.route('/locateReturn', methods=['GET', 'POST'])
 def report4():
