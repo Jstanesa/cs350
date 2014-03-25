@@ -1,13 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
  <h1>Search for an Estate</h1>
+<p><i>Please, select one</i><font size=6>&#9786;</font></p>
 
 <form method = "post" action = "/locateForm2">
-<table>
-					<tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>
-          <tr><td>Address</td><td><input type="text" id="address" name="address"/></td></tr>
-          <tr><td>Cost of Damage:</td><td>min</td><td><input type="number" id="min" name="min"/></td><td>max</td><td><input type="number" id="max" name="max"/></td></tr>
-          <input type="submit" value="Search Estates"/>
-</table>
+
+  <b>State</b> <input type="text" id="state" name="state" /><br/><br/>
+          <!--<tr><td>Address</td><td><input type="text" id="address" name="address"/></td></tr>-->
+          <!--<tr><td>Cost of Damage:</td><td>min</td><td><input type="number" id="min" name="min"/></td><td>max</td><td><input type="number" id="max" name="max"/></td></tr>-->
+            <input type="submit" value="Search by State!"/>
+ 
 </form>
+<br/>
+<hr>
+<br/> 
+
+<form method = "post" action = "/locateForm2">
+
+					<!--<tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>-->
+  <b>Address</b> <input type="text" id="address" name="address"/><br/><br/>
+          <!--<tr><td>Cost of Damage:</td><td>min</td><td><input type="number" id="min" name="min"/></td><td>max</td><td><input type="number" id="max" name="max"/></td></tr>-->
+          <input type="submit" value="Search by Address!"/>
+
+</form>
+<br/>
+<hr>
+<br/>
+<form method = "post" action = "/locateForm2">
+
+					<!--<tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>-->
+          <!--<tr><td>Address</td><td><input type="text" id="address" name="address"/></td></tr>-->
+  <b>Cost of Damage:</b><br/><br/>max<input type="number" id="max" name="max"/>
+<br/><br/><input type="submit" value="Search by Damages!"/>
+
+</form>
+
+<img src="http://fayetteville.favoriteagent.com/images/home%20search.jpg" alt="search" width="500" height="500">
 {% endblock %}
