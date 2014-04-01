@@ -3,6 +3,10 @@ import utils, MySQLdb
 
 app = Flask(__name__)
 
+#set secret key for sessions
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+#set current user to 'guest'
+currentUser = 'guest'
 
 @app.route('/')
 def mainIndex():
@@ -36,7 +40,7 @@ def estateadd2():
       print(query)
       cur.execute(query)
       db.commit()
-      query = "INSERT INTO house_damages (damage_id,house_id,cost) VALUES ((SELECT damage_id from damages where type='"
+      query = "INSERT INTO house_damages (damage_id,type,cost) VALUES ('"
       query+=damageType+"'), (SELECT house_id FROM basicHouse WHERE address= '"+ address+"') , '"+ request.form['damageCost'] + "');" 
       print(query)
       cur.execute(query)
@@ -88,6 +92,31 @@ def report4():
 @app.route('/contact')
 def contact():
   return render_template('contact.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  '''
+    global currentUser
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    # if user typed in a post ...
+    if request.method == 'POST':
+      print "HI"
+
+      username = request.form['username']
+      session['username'] = username
+      #currentUser = username
+      print(session['username'])                                  
+      currentUser = username
+
+      pw = request.form['pw']
+      query = "SELECT * FROM users WHERE password = SHA2('%s', 0)" % pw
+      print query
+      cur.execute(query)
+      if cur.fetchone():
+         return redirect(url_for('mainIndex'))
+    '''
+  return render_template('login.html', selectedMenu='Login', name = currentUser)
 
 if __name__ == '__main__':
     app.debug=True
