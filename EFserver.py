@@ -25,7 +25,6 @@ def report3():
   
 @app.route('/add', methods=['GET', 'POST'])
 def estateadd():
-
     return render_template('add.html', name = currentUser)
   
 @app.route('/add2', methods=['GET', 'POST'])
@@ -34,14 +33,14 @@ def estateadd2():
     cur = db.cursor()    
     #if user typed in the form and submitted
     if request.method == 'POST':
-      damageType=request.form['damageType']
+      damageType=MySQLdb.escape_string(request.form['damageType'])
       address=request.form['address']
-      query = "INSERT INTO basicHouse (address,county,state,price) VALUES ('" + address +"', '"+request.form['county']+"', '"+request.form['state']+"', "+request.form['price']+")"
+      query = "INSERT INTO basicHouse (address,county,state,price) VALUES ('" + address +"', '"+MySQLdb.escape_string(request.form['county'])+"', '"+MySQLdb.escape_string(request.form['state'])+"', "+MySQLdb.escape_string(request.form['price'])+")"
       print(query)
       cur.execute(query)
       db.commit()
       query = "INSERT INTO house_damages (damage_id,type,cost) VALUES ('"
-      query+=damageType+"'), (SELECT house_id FROM basicHouse WHERE address= '"+ address+"') , '"+ request.form['damageCost'] + "');" 
+      query+=damageType+"'), (SELECT house_id FROM basicHouse WHERE address= '"+ address+"') , '"+ MySQLdb.escape_string(request.form['damageCost']) + "');" 
       print(query)
       cur.execute(query)
       #rows = cur.fetchall()
@@ -50,7 +49,6 @@ def estateadd2():
 
 @app.route('/locateForm', methods=['GET', 'POST'])
 def estatelocate():
-
     return render_template('estatelocate.html', name = currentUser)
   
 @app.route('/locateForm2', methods=['GET', 'POST'])
@@ -62,16 +60,14 @@ def estatelocate2():
 		
         if 'state' in request.form:
   	    #if request.form['state']:
-            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.state = '" + request.form['state'] + "' GROUP BY b.address;"
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.state = '" + MySQLdb.escape_string(request.form['state']) + "' GROUP BY b.address;"
         if 'address' in request.form: 
         #if request.form['address']:
-            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.address LIKE '%" + request.form['address'] + "%';" 
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.address LIKE '%" + MySQLdb.escape_string(request.form['address']) + "%';" 
         if 'max' in request.form:
         #if request.form['min']:
-            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND hd.cost <= " + request.form['max'] + " GROUP BY b.address;" 
+            query = "SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND hd.cost <= " + MySQLdb.escape_string(request.form['max']) + " GROUP BY b.address;" 
             print(query)		
-			
-		
 			
     cur.execute(query)
     rows = cur.fetchall()
@@ -103,13 +99,13 @@ def login():
     if request.method == 'POST':
       print "HI"
 
-      username = request.form['username']
+      username = MySQLdb.escape_string(request.form['username'])
       session['username'] = username
       #currentUser = username
       print(session['username'])                                  
       currentUser = username
 
-      pw = request.form['pw']
+      pw = MySQLdb.escape_string(request.form['pw'])
       query = "SELECT * FROM users WHERE password = SHA2('%s', 0)" % pw
       print query
       cur.execute(query)
@@ -127,9 +123,9 @@ def register():
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
     
     #get form results.
-    username = request.form['username']
-    password = request.form['pw']
-    zipcode = request.form['zipcode']
+    username = MySQLdb.escape_string(request.form['username'])
+    password = MySQLdb.escape_string(request.form['pw'])
+    zipcode = MySQLdb.escape_string(request.form['zipcode'])
     
     #testing in terminal
     print "Hi " + username + " " + password + " " + zipcode
@@ -158,7 +154,6 @@ def logout():
     #else: 
     return render_template('index.html', selectedMenu='Home', name = currentUser)
   
-
 if __name__ == '__main__':
     app.debug=True
     app.run(host='0.0.0.0', port = 3000)
