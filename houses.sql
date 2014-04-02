@@ -28,3 +28,11 @@ insert into house_damages (house_id,type,cost) values (1,'water damage',1000);
 insert into house_damages (house_id,type,cost) values (2,'fire damage',1500);
 insert into house_damages (house_id,type,cost) values (2,'sabotage',900);
 insert into house_damages (house_id,type,cost) values (3,'plumbing',500);
+
+CREATE TABLE users (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(12) NOT NULL,
+  `password` varchar(256) NOT NULL,
+  `zipcode` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;

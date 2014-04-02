@@ -30,8 +30,14 @@
             <a href="/houses">All Estates</a></li>
           <li {% if selectedMenu == "Add Estate" %} class ="selected" {% endif %}>
             <a href="/add">Add Estate</a></li>
-          <li {% if selectedMenu == "Contact Us" %} class ="selected" {% endif %}>
-            <a href="/contact">Contact Us</a></li>
+          <!--<li {% if selectedMenu == "Contact Us" %} class ="selected" {% endif %}>
+            <a href="/contact">Contact Us</a></li>-->
+          <li {% if selectedMenu == "Login" %} class ="selected" {% endif %}>
+            <a href="/login">Login</a></li>
+          <li {% if selectedMenu == "Register" %} class ="selected" {% endif %}>
+            <a href="/register">Register</a></li>
+          <li {% if selectedMenu == "Welcome" %} class="selected" {% endif %}>
+            <a href="/logout">Welcome, {{name}}</a></li>
         </ul>
       </div>
     </div>
@@ -51,6 +57,7 @@
           <li><a href="http://benefits.va.gov/homeloans/appraiser_cv.asp">Need a House Appraised?</a></li>
           <li><a href="http://www.foreclosurelaw.org/">Foreclosure Laws</a></li>
           <li><a href="http://www.lowes.com/">Lowe's Home Repair</a></li>
+          <li><a href="http://estatefinder-81909.use1.nitrousbox.com/contact">Contact Us!</a></li>
         </ul>
         <h3>Search</h3>
         <form method="post" action="#" id="search_form">

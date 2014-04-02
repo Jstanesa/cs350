@@ -1,0 +1,25 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+        <!-- insert the page content here -->
+        <h1>Login</h1>
+        <form method="post" action="/login">
+    <p>
+    <label for="username">Username:</label>
+      <input type="text" id="username" name="username" size="40" /></p>
+    <p>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="pw" size="40" /></p>
+
+    <p><input type="submit" value="login" name="submit" /></p>
+  </form>
+
+  <img src = "http://www.franklyrealestate.com/images/House_in_hands.jpg" width ="450" length="275">
+        
+        
+ 
+        
+{% endblock %}

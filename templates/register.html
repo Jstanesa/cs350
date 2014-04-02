@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+        <!-- insert the page content here -->
+        <h1>Register</h1>
+        <form method="post" action="/register">
+    <p>
+    <label for="username">Enter a Username:</label>
+      <input type="text" id="username" name="username" size="40" /> </p>
+    <p>
+    <label for="password">Enter a Password:</label>
+      <input type="password" id="password" name="pw" size="40" /></p>
+    <p>
+      <label for="zipcode">Enter your zipcode:</label>
+      <input type="number" id="zipcode" name="zipcode" size="40" /></p> 
+
+    <p><input type="submit" value="Register!" name="register" /></p>
+  </form>
+        
+        
+ 
+        
+{% endblock %}

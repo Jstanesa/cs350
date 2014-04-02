@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import utils, MySQLdb
 
 app = Flask(__name__)
@@ -10,7 +10,7 @@ currentUser = 'guest'
 
 @app.route('/')
 def mainIndex():
-    return render_template('index.html')
+    return render_template('index.html', name = currentUser)
   
 @app.route('/houses', methods=['GET', 'POST'])
 def report3():
@@ -21,12 +21,12 @@ def report3():
     cur.execute('SELECT b.address, b.county, b.state, b.price, SUM(hd.cost) FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id GROUP BY b.address')
     rows = cur.fetchall()
     print(rows)
-    return render_template('houses.html', houses=rows)
+    return render_template('houses.html', houses=rows, name = currentUser)
   
 @app.route('/add', methods=['GET', 'POST'])
 def estateadd():
 
-    return render_template('add.html')
+    return render_template('add.html', name = currentUser)
   
 @app.route('/add2', methods=['GET', 'POST'])
 def estateadd2():
@@ -46,12 +46,12 @@ def estateadd2():
       cur.execute(query)
       #rows = cur.fetchall()
       db.commit()
-    return render_template('index.html')
+    return render_template('index.html', name = currentUser)
 
 @app.route('/locateForm', methods=['GET', 'POST'])
 def estatelocate():
 
-    return render_template('estatelocate.html')
+    return render_template('estatelocate.html', name = currentUser)
   
 @app.route('/locateForm2', methods=['GET', 'POST'])
 def estatelocate2():
@@ -76,7 +76,7 @@ def estatelocate2():
     cur.execute(query)
     rows = cur.fetchall()
     print(rows)
-    return render_template('locateReturn.html', houses = rows)
+    return render_template('locateReturn.html', houses = rows, name = currentUser)
 	
 
 @app.route('/locateReturn', methods=['GET', 'POST'])
@@ -88,14 +88,14 @@ def report4():
     cur.execute(query)
     rows = cur.fetchall()
 
-    return render_template('locateReturn.html', selectedMenu='List')
+    return render_template('locateReturn.html', selectedMenu='List', name = currentUser)
 @app.route('/contact')
 def contact():
-  return render_template('contact.html')
+  return render_template('contact.html', name = currentUser)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-  '''
+  
     global currentUser
     db = utils.db_connect()
     cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
@@ -115,8 +115,49 @@ def login():
       cur.execute(query)
       if cur.fetchone():
          return redirect(url_for('mainIndex'))
-    '''
-  return render_template('login.html', selectedMenu='Login', name = currentUser)
+    
+    return render_template('login.html', selectedMenu='Login', name = currentUser)
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+  #If they registered for an account
+  if request.method == 'POST':
+    
+    #set up database connections
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+    
+    #get form results.
+    username = request.form['username']
+    password = request.form['pw']
+    zipcode = request.form['zipcode']
+    
+    #testing in terminal
+    print "Hi " + username + " " + password + " " + zipcode
+    
+    #Insert into 'users' table
+    #query = "INSERT INTO users (username, password, zipcode) VALUES ('";
+    #query += request.form['username'] + "','" + request.form['pw'] + "','" + request.form['zipcode'] + "')"
+    #Hash it
+    ###ADD ZIPCODE TO USERS TABLE  
+    query = "INSERT INTO users (username, password, zipcode) VALUES ('%s', SHA2('%s', 0), '%d')" % (username, password, int(zipcode))
+    print query          #testing in terminal
+      
+    cur.execute(query)
+    db.commit()
+    
+    return render_template('login.html', selectedMenu='Login')
+  
+  return render_template('register.html', selectedMenu='Register', name = currentUser)
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it's there
+
+    currentUser = 'guest'
+    #return redirect(url_for('mainIndex'), currentUser)
+    #else: 
+    return render_template('index.html', selectedMenu='Home', name = currentUser)
+  
 
 if __name__ == '__main__':
     app.debug=True
