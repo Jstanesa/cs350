@@ -31,20 +31,32 @@ def estateadd():
 def estateadd2():
     db = utils.db_connect()
     cur = db.cursor()    
-    #if user typed in the form and submitted
-    if request.method == 'POST':
-      damageType=MySQLdb.escape_string(request.form['damageType'])
-      address=request.form['address']
-      query = "INSERT INTO basicHouse (address,county,state,price) VALUES ('" + address +"', '"+MySQLdb.escape_string(request.form['county'])+"', '"+MySQLdb.escape_string(request.form['state'])+"', "+MySQLdb.escape_string(request.form['price'])+")"
-      print(query)
-      cur.execute(query)
-      db.commit()
-      query = "INSERT INTO house_damages (damage_id,type,cost) VALUES ('"
-      query+=damageType+"'), (SELECT house_id FROM basicHouse WHERE address= '"+ address+"') , '"+ MySQLdb.escape_string(request.form['damageCost']) + "');" 
-      print(query)
-      cur.execute(query)
-      #rows = cur.fetchall()
-      db.commit()
+
+    if request.method == 'POST':       #if user has submitted something
+      
+      if 'address' in request.form:  #if user is adding an estate
+        damageType = MySQLdb.escape_string(request.form['damageType'])
+        address = request.form['address']
+        query = "INSERT INTO basicHouse (address,county,state,price) VALUES ('" + address +"', '"+MySQLdb.escape_string(request.form['county'])+"', '"+MySQLdb.escape_string(request.form['state'])+"', "+MySQLdb.escape_string(request.form['price'])+")"
+        print(query)
+        cur.execute(query)
+        db.commit()
+        query = "INSERT INTO house_damages (type,house_id,cost) VALUES ('"
+        query+=damageType+"', (SELECT house_id FROM basicHouse WHERE address= '"+ address+"' GROUP BY address) , '"+ MySQLdb.escape_string(request.form['damageCost']) + "');" 
+        print(query)
+        cur.execute(query)
+        #rows = cur.fetchall()
+        db.commit()
+        
+      if 'damAddress' in request.form: #if adding damages to existing estate
+        address = MySQLdb.escape_string(request.form['damAddress'])
+        damageType = MySQLdb.escape_string(request.form['damDamageType'])
+        damageCost = MySQLdb.escape_string(request.form['damDamageCost'])
+        query = "INSERT INTO house_damages (house_id,type,cost) VALUES ((SELECT house_id FROM basicHouse WHERE address = '" + address + "'),'"+ damageType+"',"+damageCost + ");" 
+        print(query)
+        cur.execute(query)
+        db.commit()
+        
     return render_template('index.html', name = currentUser)
 
 @app.route('/locateForm', methods=['GET', 'POST'])
