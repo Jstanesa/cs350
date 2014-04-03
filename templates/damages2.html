@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Damages: </h1>
+<table>
+    <tr><th>ADDRESS</th><th>TYPE OF DAMAGE</th><th>EST. COST OF REPAIRS</th></tr>
+    {% for damage in damages %}
+    <tr><td>{{damage['address']}}</td><td>{{damage['type']}} </td><td>{{damage['cost']}}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

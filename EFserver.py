@@ -59,6 +59,20 @@ def estateadd2():
         
     return render_template('index.html', name = currentUser)
 
+@app.route('/damages', methods=['GET', 'POST'])
+def damages():
+    return render_template('damages.html', name = currentUser)
+  
+@app.route('/damages2', methods=['GET', 'POST'])
+def damages2():
+    db = utils.db_connect()
+    cur = db.cursor(cursorclass=MySQLdb.cursors.DictCursor)   
+    query = "SELECT b.address, hd.type, hd.cost FROM basicHouse b INNER JOIN house_damages hd ON b.house_id = hd.house_id AND b.address LIKE '%" + MySQLdb.escape_string(request.form['address']) + "%'ORDER BY b.address;" 
+    cur.execute(query)
+    rows = cur.fetchall()
+    print(rows)
+    return render_template('damages2.html', name = currentUser,damages = rows)
+
 @app.route('/locateForm', methods=['GET', 'POST'])
 def estatelocate():
     return render_template('estatelocate.html', name = currentUser)
@@ -86,7 +100,6 @@ def estatelocate2():
     print(rows)
     return render_template('locateReturn.html', houses = rows, name = currentUser)
 	
-
 @app.route('/locateReturn', methods=['GET', 'POST'])
 def report4():
 
@@ -97,6 +110,7 @@ def report4():
     rows = cur.fetchall()
 
     return render_template('locateReturn.html', selectedMenu='List', name = currentUser)
+  
 @app.route('/contact')
 def contact():
   return render_template('contact.html', name = currentUser)
@@ -125,6 +139,7 @@ def login():
          return redirect(url_for('mainIndex'))
     
     return render_template('login.html', selectedMenu='Login', name = currentUser)
+  
 @app.route('/register', methods=['GET', 'POST'])
 def register():
   #If they registered for an account

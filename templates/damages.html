@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+ <h1>Search for an Estate</h1>
+
+<form method = "post" action = "/damages2">
+
+  <b>Address</b> <input type="text" id="address" name="address"/><br/><br/>
+          <input type="submit" value="Search by Address!"/>
+
+</form>
+{% endblock %}
