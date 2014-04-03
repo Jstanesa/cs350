@@ -9,8 +9,20 @@
           <tr><td>State</td><td><input type="text" id="state" name="state" /></td></tr>
           <tr><td>Price</td><td><input type="text" id="price" name="price" /></td></tr>
           <tr><td>Damage Type</td><td><input type="text" id="damageType" name="damageType" /></td></tr>
-          <tr><td>Damage Price</td><td><input type="text" id="damageCost" name="damageCost" /></td></tr>
-          <input type="submit" value="Add Estates" />
+          <tr><td>Damage Estimate</td><td><input type="text" id="damageCost" name="damageCost" /></td></tr>
+          <input type="submit" value="Add Estate" />
 </table>
 </form>
+
+ <h1>Report Damages</h1>  
+
+<form method = "post" action = "/add2">
+<table>
+          <tr><td>Address</td><td><input type="text" id="damAddress" name="damAddress" /></td></tr>  
+          <tr><td>Damage Type</td><td><input type="text" id="damDamageType" name="damDamageType" /></td></tr>
+          <tr><td>Damage Estimate</td><td><input type="text" id="damDamageCost" name="damDamageCost" /></td></tr>  
+          <input type="submit" value="Report Damage" />
+</table>
+</form>
+
 {% endblock %}
