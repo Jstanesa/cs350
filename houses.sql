@@ -37,6 +37,8 @@ CREATE TABLE house_damages (
 insert into house_damages (house_id,type,cost) values (1,'water',1000);
 insert into house_damages (house_id,type,cost) values (2,'fire',1500);
 insert into house_damages (house_id,type,cost) values (3,'neglect',900);
+insert into house_damages (house_id,type,cost) values (3,'pests',300);
+insert into house_damages (house_id,type,cost) values (3,'plumbing',1200);
 insert into house_damages (house_id,type,cost) values (4,'vandalism',500);
 insert into house_damages (house_id,type,cost) values (5,'water',1000);
 insert into house_damages (house_id,type,cost) values (6,'fire',1500);
